@@ -7,7 +7,7 @@
 // for convenience
 using json = nlohmann::json;
 
-constexpr double max_speed = 50.0;
+constexpr double max_speed = 45.0;
 
 // For converting back and forth between radians and degrees.
 constexpr double pi() { return M_PI; }
@@ -33,9 +33,6 @@ std::string hasData(std::string s) {
 int main()
 {
   uWS::Hub h;
-  std::ofstream out("out.txt");
-  std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
-  std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
 
   PID pid;
   // TODO: Initialize the pid variable.
