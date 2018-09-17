@@ -36,9 +36,7 @@ int main()
 
   PID pid;
   // TODO: Initialize the pid variable.
-//  pid.Init(0.2, 0.0004, 2.5); // 30mph and 40mph
-//  pid.Init(0.1, 0.0004, 1.5);	// 50mph
-  pid.Init(0.09, 0.001, 1.05);	// 60mph
+  pid.Init(0.1, 0.001, 1.5);	// 50mph
 
   // Pid for speed control
   PID speed_pid;
@@ -70,7 +68,7 @@ int main()
           pid.UpdateError(cte);
           steer_value = pid.TotalError();
           
-          speed_pid.UpdateError(speed_error + fabs(cte)*7);
+          speed_pid.UpdateError(speed_error);
           double throttle = speed_pid.TotalError();
           // DEBUG
 //          std::cout << "CTE:\t" << cte /*<< " Steering Value: " << steer_value*/ << std::endl;
