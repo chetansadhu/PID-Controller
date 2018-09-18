@@ -7,7 +7,7 @@
 // for convenience
 using json = nlohmann::json;
 
-constexpr double max_speed = 45.0;
+constexpr double max_speed = 40.0;
 
 // For converting back and forth between radians and degrees.
 constexpr double pi() { return M_PI; }
@@ -33,14 +33,17 @@ std::string hasData(std::string s) {
 int main()
 {
   uWS::Hub h;
+  std::ofstream out("out.txt");
+  std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+  std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
 
   PID pid;
   // TODO: Initialize the pid variable.
-  pid.Init(0.1, 0.001, 1.5);	// 50mph
+  pid.Init(0.1, 0.01, 1.65);
 
   // Pid for speed control
   PID speed_pid;
-  speed_pid.Init(0.35, 0.001, 0); // 60mph
+  speed_pid.Init(0.35, 0.01, 0);
 
   h.onMessage([&](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
@@ -71,8 +74,7 @@ int main()
           speed_pid.UpdateError(speed_error);
           double throttle = speed_pid.TotalError();
           // DEBUG
-//          std::cout << "CTE:\t" << cte /*<< " Steering Value: " << steer_value*/ << std::endl;
-          std::cout << cte << "\t" << steer_value << "\t" << speed_error << "\t" << throttle << std::endl;
+          std::cout << cte << "\t" << steer_value << std::endl;
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
